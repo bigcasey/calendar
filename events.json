@@ -57,7 +57,7 @@
     "start": "2026-04-12",
     "end": "2026-04-12",
     "label": "Art Car Show - Houston",
-    "type": "family"
+    "type": "weekend"
   },
   {
     "start": "2026-04-09",
@@ -82,5 +82,17 @@
     "end": "2026-11-03",
     "label": "BT's Birthday",
     "type": "holiday"
+  },
+  {
+    "start": "2026-10-11",
+    "end": "2026-10-11",
+    "label": "Demolition Derby - Burnet, TX",
+    "type": "weekend"
+  },
+  {
+    "start": "2026-09-05",
+    "end": "2026-09-08",
+    "label": "Mommy/Daddy 50th Birthday Party - Cancun, QR, MX",
+    "type": "trip"
   }
 ]
