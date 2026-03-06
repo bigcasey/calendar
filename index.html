@@ -371,12 +371,24 @@
       const end = parseDate(ev.end);
       while (cur <= end) {
         const key = cur.toISOString().slice(0,10);
-        map[key] = ev;
+        if (!map[key]) {
+          map[key] = [ev];
+        } else if (map[key].length === 1 && map[key][0] !== ev) {
+          map[key].push(ev);
+        }
         cur = new Date(cur.getTime() + 86400000);
       }
     });
     return map;
   }
+
+  const TYPE_COLORS = {
+    weekend: 'var(--type-weekend)',
+    trip:    'var(--type-trip)',
+    work:    'var(--type-work)',
+    family:  'var(--type-family)',
+    holiday: 'var(--type-holiday)'
+  };
 
   function buildCalendar(events) {
     const eventMap = buildEventMap(events);
@@ -427,9 +439,18 @@
         if (isWeekend) cell.classList.add('weekend');
 
         if (eventMap[dateStr]) {
-          const ev = eventMap[dateStr];
-          cell.classList.add('has-event', `event-${ev.type}`);
-          cell.setAttribute('data-tip', ev.label);
+          const evs = eventMap[dateStr];
+          cell.classList.add('has-event');
+          if (evs.length === 1) {
+            cell.classList.add(`event-${evs[0].type}`);
+            cell.setAttribute('data-tip', evs[0].label);
+          } else {
+            const c1 = TYPE_COLORS[evs[0].type] || '#888';
+            const c2 = TYPE_COLORS[evs[1].type] || '#888';
+            cell.style.background = `linear-gradient(135deg, ${c1} 50%, ${c2} 50%)`;
+            cell.style.color = '#fff';
+            cell.setAttribute('data-tip', `${evs[0].label} / ${evs[1].label}`);
+          }
         }
 
         daysGrid.appendChild(cell);

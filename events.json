@@ -1,32 +1,38 @@
 [
   {
-    "start": "2026-03-14",
-    "end": "2026-03-15",
-    "label": "Spring Hill Weekend Trip",
-    "type": "trip"
-  },
-  {
-    "start": "2026-03-21",
-    "end": "2026-03-22",
-    "label": "Dinner + Concert",
-    "type": "family"
-  },
-  {
-    "start": "2026-04-03",
-    "end": "2026-04-05",
-    "label": "Work Conference - Austin",
+    "start": "2026-03-15",
+    "end": "2026-03-18",
+    "label": "Kiko - NACM - ABQ",
     "type": "work"
   },
   {
-    "start": "2026-05-23",
-    "end": "2026-05-25",
-    "label": "Memorial Day Weekend",
-    "type": "holiday"
+    "start": "2026-03-21",
+    "end": "2026-03-21",
+    "label": "Burnet Airshow - Burnet, TX",
+    "type": "family"
   },
   {
-    "start": "2026-07-04",
-    "end": "2026-07-05",
-    "label": "Fourth of July",
-    "type": "holiday"
+    "start": "2026-03-23",
+    "end": "2026-03-25",
+    "label": "Kiko - MCP - MSY",
+    "type": "work"
+  },
+  {
+    "start": "2026-03-26",
+    "end": "2026-05-27",
+    "label": "Kiko - TMCEC - Dallas",
+    "type": "work"
+  },
+  {
+    "start": "2026-03-31",
+    "end": "2026-04-01",
+    "label": "DK - TXASLA - Ft. Worth",
+    "type": "trip"
+  },
+  {
+    "start": "2026-04-03",
+    "end": "2026-04-06",
+    "label": "Easter w/ Mimi - Dallas",
+    "type": "family"
   }
 ]
