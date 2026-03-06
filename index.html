@@ -91,7 +91,28 @@
       flex-shrink: 0;
     }
 
-    /* Calendar Grid */
+    .jump-btn {
+      display: block;
+      margin: 0 auto 2.5rem;
+      padding: 0.55rem 1.4rem;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .jump-btn:hover {
+      background: var(--gold);
+      color: #111;
+    }
+
+
     .year-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -325,6 +346,8 @@
   <div class="legend-item"><div class="legend-dot" style="background:var(--type-holiday)"></div> Holiday</div>
 </div>
 
+<button class="jump-btn" onclick="jumpToToday()">Jump to Today</button>
+
 <div class="year-grid" id="calendarGrid"></div>
 
 <div class="section-title">Upcoming Events</div>
@@ -486,6 +509,13 @@
       `;
       list.appendChild(row);
     });
+  }
+
+  function jumpToToday() {
+    const todayCell = document.querySelector('.day-cell.today');
+    if (todayCell) {
+      todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   async function init() {
