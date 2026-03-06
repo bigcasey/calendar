@@ -34,5 +34,35 @@
     "end": "2026-04-06",
     "label": "Easter w/ Mimi - Dallas",
     "type": "family"
+  },
+  {
+    "start": "2026-05-01",
+    "end": "2026-05-03",
+    "label": "SATX Airshow/Menger Hotel - San Antonio",
+    "type": "family"
+  },
+  {
+    "start": "2026-05-20",
+    "end": "2026-05-20",
+    "label": "Mommy/Daddy Anniversary",
+    "type": "holiday"
+  },
+  {
+    "start": "2026-05-29",
+    "end": "2026-05-29",
+    "label": "Boo Boo's Birthday",
+    "type": "holiday"
+  },
+  {
+    "start": "2026-04-12",
+    "end": "2026-04-12",
+    "label": "Art Car Show - Houston",
+    "type": "family"
+  },
+  {
+    "start": "2026-04-09",
+    "end": "2026-04-11",
+    "label": "Ring Ceremony/Track Meet - College Station",
+    "type": "family"
   }
 ]
