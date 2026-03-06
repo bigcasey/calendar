@@ -25,7 +25,7 @@
   },
   {
     "start": "2026-03-31",
-    "end": "2026-04-01",
+    "end": "2026-04-02",
     "label": "DK - TXASLA - Ft. Worth",
     "type": "trip"
   },
@@ -64,5 +64,23 @@
     "end": "2026-04-11",
     "label": "Ring Ceremony/Track Meet - College Station",
     "type": "family"
+  },
+  {
+    "start": "2026-09-13",
+    "end": "2026-09-13",
+    "label": "Mommy's Birthday",
+    "type": "holiday"
+  },
+  {
+    "start": "2026-09-28",
+    "end": "2026-09-28",
+    "label": "Daddy's Birthday",
+    "type": "holiday"
+  },
+  {
+    "start": "2026-11-03",
+    "end": "2026-11-03",
+    "label": "BT's Birthday",
+    "type": "holiday"
   }
 ]
