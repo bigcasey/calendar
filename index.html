@@ -18,8 +18,7 @@
       --muted: #7a7568;
       --weekend: #1f1d19;
 
-      --type-weekend: #4a7c59;
-      --type-trip: #3a6b8a;
+      --type-couple: #4a7c59;
       --type-work: #7a4f8a;
       --type-family: #c9623a;
       --type-holiday: #c9a84c;
@@ -65,31 +64,51 @@
       margin-top: 0.6rem;
     }
 
-    /* Legend */
+    /* Legend toggle pills */
     .legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem 1.5rem;
+      gap: 0.6rem;
       justify-content: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    .legend-item {
+    .legend-pill {
       display: flex;
       align-items: center;
       gap: 0.45rem;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--muted);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.2s, background 0.2s, color 0.2s;
     }
 
-    .legend-dot {
-      width: 10px;
-      height: 10px;
+    .legend-pill .pill-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       flex-shrink: 0;
+      transition: opacity 0.2s;
     }
+
+    .legend-pill.active {
+      opacity: 1;
+    }
+
+    .legend-pill.inactive {
+      opacity: 0.35;
+      text-decoration: line-through;
+    }
+
+    .pill-couple  { border-color: var(--type-couple);  color: var(--type-couple); }
+    .pill-work    { border-color: var(--type-work);    color: var(--type-work); }
+    .pill-family  { border-color: var(--type-family);  color: var(--type-family); }
+    .pill-holiday { border-color: var(--type-holiday); color: var(--type-holiday); }
 
     .jump-btn {
       display: block;
@@ -209,8 +228,7 @@
       font-weight: 500;
     }
 
-    .day-cell.event-weekend  { background: var(--type-weekend); }
-    .day-cell.event-trip     { background: var(--type-trip); }
+    .day-cell.event-couple   { background: var(--type-couple); }
     .day-cell.event-work     { background: var(--type-work); }
     .day-cell.event-family   { background: var(--type-family); }
     .day-cell.event-holiday  { background: var(--type-holiday); color: #111; }
@@ -278,8 +296,7 @@
       animation: fadeUp 0.35s ease both;
     }
 
-    .event-row.type-weekend { border-left-color: var(--type-weekend); }
-    .event-row.type-trip    { border-left-color: var(--type-trip); }
+    .event-row.type-couple  { border-left-color: var(--type-couple); }
     .event-row.type-work    { border-left-color: var(--type-work); }
     .event-row.type-family  { border-left-color: var(--type-family); }
     .event-row.type-holiday { border-left-color: var(--type-holiday); }
@@ -305,8 +322,7 @@
       white-space: nowrap;
     }
 
-    .badge-weekend { background: var(--type-weekend); color: #fff; }
-    .badge-trip    { background: var(--type-trip);    color: #fff; }
+    .badge-couple  { background: var(--type-couple);  color: #fff; }
     .badge-work    { background: var(--type-work);    color: #fff; }
     .badge-family  { background: var(--type-family);  color: #fff; }
     .badge-holiday { background: var(--type-holiday); color: #111; }
@@ -338,12 +354,19 @@
   <p class="subtitle">Family &bull; Events &bull; Travel</p>
 </header>
 
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:var(--type-weekend)"></div> Weekend Plans</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--type-trip)"></div> Trip</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--type-work)"></div> Work</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--type-family)"></div> Family</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--type-holiday)"></div> Holiday</div>
+<div class="legend" id="legend">
+  <div class="legend-pill pill-couple active" data-type="couple" onclick="toggleType('couple', this)">
+    <div class="pill-dot" style="background:var(--type-couple)"></div> Mommy/Daddy Only
+  </div>
+  <div class="legend-pill pill-work active" data-type="work" onclick="toggleType('work', this)">
+    <div class="pill-dot" style="background:var(--type-work)"></div> Work
+  </div>
+  <div class="legend-pill pill-family active" data-type="family" onclick="toggleType('family', this)">
+    <div class="pill-dot" style="background:var(--type-family)"></div> Family
+  </div>
+  <div class="legend-pill pill-holiday active" data-type="holiday" onclick="toggleType('holiday', this)">
+    <div class="pill-dot" style="background:var(--type-holiday)"></div> Holidays/Birthdays
+  </div>
 </div>
 
 <button class="jump-btn" onclick="jumpToToday()">Jump to Today</button>
@@ -359,11 +382,10 @@
   const EVENTS_FILE = 'events.json';
 
   const TYPE_LABELS = {
-    weekend: 'Weekend Plans',
-    trip:    'Trip',
+    couple:  'Mommy/Daddy Only',
     work:    'Work',
     family:  'Family',
-    holiday: 'Holiday'
+    holiday: 'Holidays/Birthdays'
   };
 
   const MONTHS = ['January','February','March','April','May','June',
@@ -406,8 +428,7 @@
   }
 
   const TYPE_COLORS = {
-    weekend: 'var(--type-weekend)',
-    trip:    'var(--type-trip)',
+    couple:  'var(--type-couple)',
     work:    'var(--type-work)',
     family:  'var(--type-family)',
     holiday: 'var(--type-holiday)'
@@ -464,6 +485,7 @@
         if (eventMap[dateStr]) {
           const evs = eventMap[dateStr];
           cell.classList.add('has-event');
+          cell.setAttribute('data-type', evs.map(e => e.type).join(','));
           if (evs.length === 1) {
             cell.classList.add(`event-${evs[0].type}`);
             cell.setAttribute('data-tip', evs[0].label);
@@ -501,6 +523,7 @@
     upcoming.forEach((ev, i) => {
       const row = document.createElement('div');
       row.className = `event-row type-${ev.type}`;
+      row.setAttribute('data-type', ev.type);
       row.style.animationDelay = `${i * 0.05}s`;
       row.innerHTML = `
         <div class="event-dates">${formatRange(ev.start, ev.end)}</div>
@@ -508,6 +531,28 @@
         <div class="event-badge badge-${ev.type}">${TYPE_LABELS[ev.type] || ev.type}</div>
       `;
       list.appendChild(row);
+    });
+  }
+
+  const hiddenTypes = new Set();
+
+  function toggleType(type, pill) {
+    if (hiddenTypes.has(type)) {
+      hiddenTypes.delete(type);
+      pill.classList.replace('inactive', 'active');
+    } else {
+      hiddenTypes.add(type);
+      pill.classList.replace('active', 'inactive');
+    }
+    // Update calendar cells
+    document.querySelectorAll('.day-cell[data-type]').forEach(cell => {
+      const types = cell.getAttribute('data-type').split(',');
+      const allHidden = types.every(t => hiddenTypes.has(t));
+      cell.style.visibility = allHidden ? 'hidden' : '';
+    });
+    // Update list rows
+    document.querySelectorAll('.event-row[data-type]').forEach(row => {
+      row.style.display = hiddenTypes.has(row.getAttribute('data-type')) ? 'none' : '';
     });
   }
 
