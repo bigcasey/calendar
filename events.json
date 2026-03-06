@@ -27,7 +27,7 @@
     "start": "2026-03-31",
     "end": "2026-04-02",
     "label": "DK - TXASLA - Ft. Worth",
-    "type": "trip"
+    "type": "work"
   },
   {
     "start": "2026-04-03",
@@ -57,7 +57,7 @@
     "start": "2026-04-11",
     "end": "2026-04-11",
     "label": "Art Car Show - Houston",
-    "type": "weekend"
+    "type": "family"
   },
   {
     "start": "2026-04-09",
@@ -93,6 +93,6 @@
     "start": "2026-09-05",
     "end": "2026-09-08",
     "label": "Mommy/Daddy 50th Birthday Party - Cancun, QR, MX",
-    "type": "trip"
+    "type": "family"
   }
 ]
