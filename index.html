@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kennedy Kalendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0e0c;
+      --surface: #1a1916;
+      --border: #2e2c28;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --text: #e8e4dc;
+      --muted: #7a7568;
+      --weekend: #1f1d19;
+
+      --type-weekend: #4a7c59;
+      --type-trip: #3a6b8a;
+      --type-work: #7a4f8a;
+      --type-family: #c9623a;
+      --type-holiday: #c9a84c;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.2rem auto 0;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Calendar Grid */
+    .year-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .month-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .month-header {
+      padding: 0.75rem 1rem;
+      background: var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .month-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .month-year {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .day-labels {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 0.5rem 0.6rem 0.25rem;
+    }
+
+    .day-label {
+      text-align: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-bottom: 0.25rem;
+    }
+
+    .day-label.weekend-label { color: var(--gold); opacity: 0.7; }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 0 0.6rem 0.75rem;
+      gap: 2px;
+    }
+
+    .day-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--muted);
+      position: relative;
+      cursor: default;
+      transition: background 0.15s;
+    }
+
+    .day-cell.today {
+      color: var(--gold);
+      font-weight: 700;
+      border: 1px solid var(--gold);
+    }
+
+    .day-cell.weekend {
+      color: var(--text);
+      background: var(--weekend);
+    }
+
+    .day-cell.has-event {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .day-cell.event-weekend  { background: var(--type-weekend); }
+    .day-cell.event-trip     { background: var(--type-trip); }
+    .day-cell.event-work     { background: var(--type-work); }
+    .day-cell.event-family   { background: var(--type-family); }
+    .day-cell.event-holiday  { background: var(--type-holiday); color: #111; }
+
+    .day-cell .dot {
+      position: absolute;
+      bottom: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+    }
+
+    /* Tooltip */
+    .day-cell[data-tip] {
+      cursor: pointer;
+    }
+
+    .day-cell[data-tip]:hover::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      color: var(--text);
+      font-size: 0.72rem;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Upcoming list */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--gold-light);
+      max-width: 1100px;
+      margin: 0 auto 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .event-list {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .event-row {
+      display: grid;
+      grid-template-columns: 160px 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      border-left: 4px solid transparent;
+      animation: fadeUp 0.35s ease both;
+    }
+
+    .event-row.type-weekend { border-left-color: var(--type-weekend); }
+    .event-row.type-trip    { border-left-color: var(--type-trip); }
+    .event-row.type-work    { border-left-color: var(--type-work); }
+    .event-row.type-family  { border-left-color: var(--type-family); }
+    .event-row.type-holiday { border-left-color: var(--type-holiday); }
+
+    .event-dates {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .event-label {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .event-badge {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .badge-weekend { background: var(--type-weekend); color: #fff; }
+    .badge-trip    { background: var(--type-trip);    color: #fff; }
+    .badge-work    { background: var(--type-work);    color: #fff; }
+    .badge-family  { background: var(--type-family);  color: #fff; }
+    .badge-holiday { background: var(--type-holiday); color: #111; }
+
+    .no-events {
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 600px) {
+      .event-row { grid-template-columns: 1fr; gap: 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Kennedy Kalendar</h1>
+  <p class="subtitle">Family &bull; Events &bull; Travel</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--type-weekend)"></div> Weekend Plans</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--type-trip)"></div> Trip</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--type-work)"></div> Work</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--type-family)"></div> Family</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--type-holiday)"></div> Holiday</div>
+</div>
+
+<div class="year-grid" id="calendarGrid"></div>
+
+<div class="section-title">Upcoming Events</div>
+<div class="event-list" id="eventList"></div>
+
+<footer>Kennedy Kalendar &mdash; updated whenever the Kennedys feel like it</footer>
+
+<script>
+  const EVENTS_FILE = 'events.json';
+
+  const TYPE_LABELS = {
+    weekend: 'Weekend Plans',
+    trip:    'Trip',
+    work:    'Work',
+    family:  'Family',
+    holiday: 'Holiday'
+  };
+
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  function parseDate(str) {
+    const [y,m,d] = str.split('-').map(Number);
+    return new Date(y, m-1, d);
+  }
+
+  function formatRange(start, end) {
+    const s = parseDate(start);
+    const e = parseDate(end);
+    const opts = { month: 'short', day: 'numeric' };
+    if (s.toDateString() === e.toDateString()) return s.toLocaleDateString('en-US', opts);
+    if (s.getMonth() === e.getMonth())
+      return `${s.toLocaleDateString('en-US', opts)} - ${e.getDate()}`;
+    return `${s.toLocaleDateString('en-US', opts)} - ${e.toLocaleDateString('en-US', opts)}`;
+  }
+
+  function buildEventMap(events) {
+    const map = {};
+    events.forEach(ev => {
+      let cur = parseDate(ev.start);
+      const end = parseDate(ev.end);
+      while (cur <= end) {
+        const key = cur.toISOString().slice(0,10);
+        map[key] = ev;
+        cur = new Date(cur.getTime() + 86400000);
+      }
+    });
+    return map;
+  }
+
+  function buildCalendar(events) {
+    const eventMap = buildEventMap(events);
+    const grid = document.getElementById('calendarGrid');
+    const year = today.getFullYear();
+
+    for (let m = 0; m < 12; m++) {
+      const card = document.createElement('div');
+      card.className = 'month-card';
+      card.style.animationDelay = `${m * 0.04}s`;
+
+      const hdr = document.createElement('div');
+      hdr.className = 'month-header';
+      hdr.innerHTML = `<span class="month-name">${MONTHS[m]}</span><span class="month-year">${year}</span>`;
+      card.appendChild(hdr);
+
+      const labelRow = document.createElement('div');
+      labelRow.className = 'day-labels';
+      ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach((d,i) => {
+        const l = document.createElement('div');
+        l.className = 'day-label' + (i===0||i===6 ? ' weekend-label' : '');
+        l.textContent = d;
+        labelRow.appendChild(l);
+      });
+      card.appendChild(labelRow);
+
+      const daysGrid = document.createElement('div');
+      daysGrid.className = 'days-grid';
+
+      const firstDay = new Date(year, m, 1).getDay();
+      const daysInMonth = new Date(year, m+1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        daysGrid.appendChild(document.createElement('div'));
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'day-cell';
+        cell.textContent = d;
+
+        const dateStr = `${year}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const dow = new Date(year, m, d).getDay();
+        const isWeekend = dow === 0 || dow === 6;
+        const isToday = new Date(year,m,d).toDateString() === today.toDateString();
+
+        if (isToday) cell.classList.add('today');
+        if (isWeekend) cell.classList.add('weekend');
+
+        if (eventMap[dateStr]) {
+          const ev = eventMap[dateStr];
+          cell.classList.add('has-event', `event-${ev.type}`);
+          cell.setAttribute('data-tip', ev.label);
+        }
+
+        daysGrid.appendChild(cell);
+      }
+
+      card.appendChild(daysGrid);
+      grid.appendChild(card);
+    }
+  }
+
+  function buildList(events) {
+    const list = document.getElementById('eventList');
+    const year = today.getFullYear();
+    const startOfYear = new Date(year, 0, 1);
+
+    const upcoming = events
+      .filter(ev => parseDate(ev.end) >= today)
+      .sort((a,b) => parseDate(a.start) - parseDate(b.start));
+
+    if (!upcoming.length) {
+      list.innerHTML = '<div class="no-events">No upcoming events. Go add some to events.json!</div>';
+      return;
+    }
+
+    upcoming.forEach((ev, i) => {
+      const row = document.createElement('div');
+      row.className = `event-row type-${ev.type}`;
+      row.style.animationDelay = `${i * 0.05}s`;
+      row.innerHTML = `
+        <div class="event-dates">${formatRange(ev.start, ev.end)}</div>
+        <div class="event-label">${ev.label}</div>
+        <div class="event-badge badge-${ev.type}">${TYPE_LABELS[ev.type] || ev.type}</div>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  async function init() {
+    try {
+      const res = await fetch(EVENTS_FILE + '?v=' + Date.now());
+      if (!res.ok) throw new Error('Could not load events.json');
+      const events = await res.json();
+      buildCalendar(events);
+      buildList(events);
+    } catch(e) {
+      console.error(e);
+      buildCalendar([]);
+      document.getElementById('eventList').innerHTML =
+        '<div class="no-events">Could not load events.json -- make sure it is in the same folder as index.html.</div>';
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>

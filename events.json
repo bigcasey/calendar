@@ -1,0 +1,32 @@
+[
+  {
+    "start": "2026-03-14",
+    "end": "2026-03-15",
+    "label": "Spring Hill Weekend Trip",
+    "type": "trip"
+  },
+  {
+    "start": "2026-03-21",
+    "end": "2026-03-22",
+    "label": "Dinner + Concert",
+    "type": "family"
+  },
+  {
+    "start": "2026-04-03",
+    "end": "2026-04-05",
+    "label": "Work Conference - Austin",
+    "type": "work"
+  },
+  {
+    "start": "2026-05-23",
+    "end": "2026-05-25",
+    "label": "Memorial Day Weekend",
+    "type": "holiday"
+  },
+  {
+    "start": "2026-07-04",
+    "end": "2026-07-05",
+    "label": "Fourth of July",
+    "type": "holiday"
+  }
+]
